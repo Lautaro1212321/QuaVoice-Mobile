@@ -39,18 +39,16 @@ def main(page: ft.Page):
         page.update()
 
     def procesar_video_hilo(url_video):
-        # En Android, esto creará una carpeta interna de la app para las descargas
         carpeta_descargas = "Descargas"
         if not os.path.exists(carpeta_descargas):
             os.makedirs(carpeta_descargas)
 
         try:
-            lbl_estado.value = "Estado: ⏳ Descargando audio en el celular..."
+            lbl_estado.value = "Estado: ⏳ Descargando audio..."
             actualizar_interfaz()
 
-            # Configuración limpia sin depender de FFmpeg.exe
             opciones = {
-                'format': 'bestaudio[ext=m4a]/bestaudio', # Descarga el m4a nativo de YouTube
+                'format': 'bestaudio[ext=m4a]/bestaudio', 
                 'outtmpl': os.path.join(carpeta_descargas, '%(title)s.%(ext)s'),
                 'quiet': True
             }
@@ -59,9 +57,8 @@ def main(page: ft.Page):
                 info_dict = ydl.extract_info(url_video, download=True)
                 nombre_cancion = info_dict.get('title', 'Audio')
                 ext = info_dict.get('ext', 'm4a')
-                ruta_final = os.path.join(carpeta_descargas, f"{nombre_cancion}.{ext}")
 
-            txt_resultado.value = f"🎵 ¡Descarga Completada en tu Móvil!\n\n📂 Archivo: {nombre_cancion}.{ext}\n📍 Guardado localmente en la app."
+            txt_resultado.value = f"🎵 ¡Descarga Completada!\n\n📂 Archivo: {nombre_cancion}.{ext}\n📍 Guardado en tu celular."
             lbl_estado.value = "Estado: ✅ ¡Proceso completado!"
 
         except Exception as e:
@@ -82,7 +79,7 @@ def main(page: ft.Page):
         btn_iniciar.disabled = True
         loading_icon.visible = True
         txt_resultado.value = ""
-        lbl_estado.value = "Estado: Iniciando descarga..."
+        lbl_estado.value = "Estado: Iniciando..."
         actualizar_interfaz()
         
         threading.Thread(target=procesar_video_hilo, args=(url,), daemon=True).start()
@@ -106,5 +103,4 @@ def main(page: ft.Page):
         txt_resultado
     )
 
-# Volvemos al modo de app nativa estándar
 ft.app(target=main)
