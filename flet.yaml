@@ -1,0 +1,4 @@
+app:
+  name: QuaVoice
+  package: com.lautaro.quavoice
+  version: 1.0.0
